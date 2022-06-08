@@ -33,9 +33,7 @@ export const createDummyProductSnapshot = (db: DB) => {
     productStock,
     productView,
     productSold,
-    productImage1: "image_1",
-    productImage2: "image_2",
-    productImage3: "image3",
+    productImages: ["image_1"],
   }, db);
 };
 

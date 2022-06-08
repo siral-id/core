@@ -15,6 +15,10 @@ export interface ICreateProduct {
   view: number;
 }
 
+export interface ICreateProductWithImages extends ICreateProduct {
+  images: string[];
+}
+
 export interface IUpdateProduct {
   productId: string;
   externalId?: string;

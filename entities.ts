@@ -29,7 +29,6 @@ export class ProductEntity {
 
 export class ProductImageEntity {
   productImageId!: number;
-  product!: ProductEntity;
   image!: string;
   createdAt!: number;
   updatedAt!: number;
@@ -48,10 +47,7 @@ export class ProductSnapshotEntity {
   productSold!: number;
   productStock!: number;
   productView!: number;
-  productImage1!: string;
-  productImage2!: string;
-  productImage3!: string;
+  productImages!: string[];
   createdAt!: number;
   updatedAt!: number;
-  product!: ProductEntity;
 }

@@ -14,7 +14,5 @@ export interface ICreateProductSnapshot {
   productSold: number;
   productStock: number;
   productView: number;
-  productImage1: string;
-  productImage2: string;
-  productImage3: string;
+  productImages: string[];
 }

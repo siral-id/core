@@ -2,7 +2,9 @@ import { DB } from "https://deno.land/x/sqlite/mod.ts";
 import {
   generateKeyValueMap,
   ICreateProductImage,
+  IGetProductImagesByProduct,
   IUpdateProductImage,
+  ProductImageEntity,
 } from "../mod.ts";
 
 export function createProductImage(
@@ -39,4 +41,29 @@ export function updateProductImage(
     query,
     [...Object.values(parameters), updatedAt, productImageId],
   );
+}
+
+export function getProductImagesByProduct(
+  { product: { productId } }: IGetProductImagesByProduct,
+  database: DB,
+): ProductImageEntity[] {
+  const getProductImageByProductIdQuery = database.prepareQuery<
+    [
+      number,
+      string,
+      number,
+      number,
+      number,
+    ]
+  >(
+    "SELECT productImageId, image, createdAt, updatedAt FROM product_images WHERE productId = ?",
+  );
+  const images = getProductImageByProductIdQuery.all([productId]);
+  getProductImageByProductIdQuery.finalize();
+  return images.map(([productImageId, image, createdAt, updatedAt]) => ({
+    productImageId,
+    image,
+    createdAt,
+    updatedAt,
+  }));
 }

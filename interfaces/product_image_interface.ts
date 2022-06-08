@@ -9,3 +9,7 @@ export interface IUpdateProductImage {
   productImageId: number;
   image: string;
 }
+
+export interface IGetProductImagesByProduct {
+  product: ProductEntity;
+}
