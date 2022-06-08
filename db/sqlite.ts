@@ -13,6 +13,6 @@ const getDatabase = () => {
   db.query(productImageSchema);
   db.query(productSnapshotSchema);
   return db;
-}
+};
 
 export { getDatabase };

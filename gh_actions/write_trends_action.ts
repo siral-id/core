@@ -5,6 +5,6 @@ import { getDatabase } from "../db/mod.ts";
 const rawJson = Deno.args[0];
 const recordsToBeInserted: ICreateTrend[] = JSON.parse(rawJson);
 
-const db = getDatabase()
+const db = getDatabase();
 
 recordsToBeInserted.map((record) => createTrend(record, db));
