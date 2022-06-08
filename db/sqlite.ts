@@ -6,10 +6,13 @@ import {
   trendSchema,
 } from "./schema.ts";
 
-const db = new DB("siral.db");
-db.query(trendSchema);
-db.query(productSchema);
-db.query(productImageSchema);
-db.query(productSnapshotSchema);
+const getDatabase = () => {
+  const db = new DB("siral.db");
+  db.query(trendSchema);
+  db.query(productSchema);
+  db.query(productImageSchema);
+  db.query(productSnapshotSchema);
+  return db;
+}
 
-export { db };
+export { getDatabase };
