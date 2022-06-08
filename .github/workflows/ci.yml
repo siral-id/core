@@ -1,0 +1,38 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.x
+          
+      - name: Check out repo
+        uses: actions/checkout@v2
+        
+      - name: Lint
+        run: deno lint
+
+      - name: Coverage
+        run: deno lint
+
+      - name: Create coverage files
+        run: deno test --allow-read --allow-write --coverage=coverage # create coverage files
+
+      - name: Create coverage report
+        run: deno coverage ./coverage --lcov > coverage.lcov # create coverage report
+
+      - name: Collect coverage
+        uses: codecov/codecov-action@v1.0.10 # upload the report on Codecov
+        with:
+          file: ./coverage.lcov
