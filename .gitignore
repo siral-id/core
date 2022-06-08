@@ -39,3 +39,5 @@ cli/tests/.test_coverage/
 
 cov_profile
 *.lcov
+
+coverage
