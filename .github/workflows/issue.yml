@@ -23,7 +23,7 @@ jobs:
         
       - if: startsWith(github.event.issue.title, 'WRITE_TREND') == true
         name: Write trend to database
-        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable insert_trends.ts '${{ github.event.issue.body }}'
+        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable gh_actions/write_trends_action.ts '${{ github.event.issue.body }}'
         
       - name: Commit & Push changes
         uses: actions-js/push@master
