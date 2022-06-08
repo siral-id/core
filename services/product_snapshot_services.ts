@@ -1,8 +1,9 @@
-import { db, ICreateProductSnapshot } from "../mod.ts";
+import { DB } from "https://deno.land/x/sqlite/mod.ts";
+import { ICreateProductSnapshot } from "../mod.ts";
 
 export function createProductSnapshot(
   { product: { productId }, ...parameters }: ICreateProductSnapshot,
-  database = db,
+  database: DB,
 ) {
   const date = new Date();
   const timestamp = Math.floor(date.getTime() / 1000.0);

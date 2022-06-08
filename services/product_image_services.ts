@@ -1,5 +1,5 @@
+import { DB } from "https://deno.land/x/sqlite/mod.ts";
 import {
-  db,
   generateKeyValueMap,
   ICreateProductImage,
   IUpdateProductImage,
@@ -7,7 +7,7 @@ import {
 
 export function createProductImage(
   { image, product: { productId } }: ICreateProductImage,
-  database = db,
+  database: DB,
 ) {
   const date = new Date();
   const timestamp = Math.floor(date.getTime() / 1000.0);
@@ -24,7 +24,7 @@ export function createProductImage(
 
 export function updateProductImage(
   { productImageId, ...parameters }: IUpdateProductImage,
-  database = db,
+  database: DB,
 ) {
   const date = new Date();
   const updatedAt = Math.floor(date.getTime() / 1000.0);

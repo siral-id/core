@@ -1,8 +1,9 @@
-import { db, ICreateTrend } from "../mod.ts";
+import { DB } from "https://deno.land/x/sqlite/mod.ts";
+import { ICreateTrend } from "../mod.ts";
 
 export function createTrend(
   { keyword, image, count, source }: ICreateTrend,
-  database = db,
+  database: DB,
 ): void {
   const date = new Date();
   const timestamp = Math.floor(date.getTime() / 1000.0);

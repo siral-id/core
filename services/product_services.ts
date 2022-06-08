@@ -1,5 +1,5 @@
+import { DB } from "https://deno.land/x/sqlite/mod.ts";
 import {
-  db,
   generateKeyValueMap,
   ICreateProduct,
   IGetProductByProductId,
@@ -9,7 +9,7 @@ import {
 
 export function createProduct(
   parameters: ICreateProduct,
-  database = db,
+  database: DB,
 ): void {
   const date = new Date();
   const timestamp = Math.floor(date.getTime() / 1000.0);
@@ -31,7 +31,7 @@ export function updateProduct(
     productId,
     ...parameters
   }: IUpdateProduct,
-  database = db,
+  database: DB,
 ): void {
   const date = new Date();
   const updatedAt = Math.floor(date.getTime() / 1000.0);
@@ -50,7 +50,7 @@ export function updateProduct(
 
 export function getProductByProductId(
   { productId }: IGetProductByProductId,
-  database = db,
+  database: DB,
 ): ProductEntity {
   const getProductByProductIdQuery = database.prepareQuery<
     [
