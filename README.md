@@ -4,7 +4,7 @@
 
 <!-- GitHub Actions -->
 
-[![](https://img.shields.io/github/workflow/status/siral-id/core/CI?style=flat-square)](https://github.com/siral-id/core/actions)
+[![Continuous Integration](https://github.com/siral-id/core/actions/workflows/ci.yml/badge.svg)](https://github.com/siral-id/core/actions/workflows/ci.yml)
 
 <!-- Codecov -->
 
