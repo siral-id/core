@@ -5,9 +5,10 @@ import {
   productSnapshotSchema,
   trendSchema,
 } from "./schema.ts";
+import { DB_FILENAME } from "../const.ts";
 
 const getDatabase = () => {
-  const db = new DB("siral.db");
+  const db = new DB(DB_FILENAME);
   db.query(trendSchema);
   db.query(productSchema);
   db.query(productImageSchema);
