@@ -1,8 +1,8 @@
 import {
   assertEquals,
   assertObjectMatch,
-} from "https://deno.land/std/testing/asserts.ts";
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
+} from "https://deno.land/std@0.142.0/testing/asserts.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.4.0/mod.ts";
 import { bootstrapDB, shutdownDB } from "../test_utility.ts";
 import {
   createProduct,
