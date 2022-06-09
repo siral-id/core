@@ -3,6 +3,7 @@
 > The all-script-required to write data to our github database using Deno.
 
 <!-- GitHub Actions -->
+[![Insert Data](https://github.com/siral-id/core/actions/workflows/issue.yml/badge.svg)](https://github.com/siral-id/core/actions/workflows/issue.yml)
 
 [![Continuous Integration](https://github.com/siral-id/core/actions/workflows/ci.yml/badge.svg)](https://github.com/siral-id/core/actions/workflows/ci.yml)
 
