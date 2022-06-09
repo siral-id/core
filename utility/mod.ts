@@ -19,8 +19,8 @@ export function generateKeyValueMap<T>(
   return query;
 }
 
-export async function download(url: string, filename: string){
-    const data = (await fetch(url)).arrayBuffer();
-    console.log(`Saving ${url} to ${filename}`);
-    return Deno.writeFile(filename, new Uint8Array(await data));
+export async function download(url: string, filename: string) {
+  const data = (await fetch(url)).arrayBuffer();
+  console.log(`Saving ${url} to ${filename}`);
+  return Deno.writeFile(filename, new Uint8Array(await data));
 }

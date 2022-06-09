@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.142.0/testing/asserts.ts";
 import { bootstrapDB, shutdownDB } from "../test_utility.ts";
 import { createTrend, Source } from "../../mod.ts";
 
