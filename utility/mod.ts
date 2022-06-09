@@ -32,13 +32,17 @@ export function setupOctokit(ghToken?: string): Octokit {
   return new Octokit({ auth: ghToken });
 }
 
-export async function upload<T>(octokit: Octokit, data: T, title: string, repo = "core") {
+export async function upload<T>(
+  octokit: Octokit,
+  data: T,
+  title: string,
+  repo = "core",
+) {
   const uuid = v4.generate();
-
   await octokit.rest.issues.create({
     owner: "siral-id",
     repo,
-    title,
+    title: `${title}_${uuid}`,
     body: JSON.stringify(data),
   });
 }
