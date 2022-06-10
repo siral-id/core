@@ -6,7 +6,7 @@ import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts"
 import { v4 } from "https://deno.land/std@0.142.0/uuid/mod.ts";
 
 export function sleep(seconds: number) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+  return new Promise((resolve) => setTimeout(resolve, 10 ** seconds));
 }
 
 export function generateKeyValueMap<T>(

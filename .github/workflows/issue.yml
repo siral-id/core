@@ -28,7 +28,7 @@ jobs:
         run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_trends.ts '${{ github.event.issue.body }}'
 
       - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
-        name: Write trend to database
+        name: Write product to database
         run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_products.ts '${{ github.event.issue.body }}'
         
       - name: Commit & Push changes
