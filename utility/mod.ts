@@ -1,6 +1,8 @@
 export * from "./header.ts";
 import { Octokit } from "https://cdn.skypack.dev/octokit@v1.7.2?dts";
+import { throttling } from "https://cdn.skypack.dev/@octokit/plugin-throttling@v3.6.2?dts";
 import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts";
+
 import { v4 } from "https://deno.land/std@0.142.0/uuid/mod.ts";
 
 export function sleep(seconds: number) {
@@ -31,7 +33,45 @@ export async function download(url: string, filename: string) {
 export function setupOctokit(ghToken?: string): Octokit {
   if (!ghToken) throw new Error("GH_TOKEN not found");
   const OctokitWithRetry = Octokit.plugin(retry);
-  return new OctokitWithRetry({ auth: ghToken });
+  const OctokitWithThrottling = OctokitWithRetry.plugin(throttling);
+  return new OctokitWithThrottling({
+    auth: ghToken,
+    throttle: {
+      onRateLimit: (
+        retryAfter: number,
+        options: {
+          method: string;
+          url: string;
+          request: { retryCount: number };
+        },
+        octokit: Octokit,
+      ) => {
+        octokit.log.warn(
+          `Request quota exhausted for request ${options.method} ${options.url}`,
+        );
+
+        if (options.request.retryCount === 0) {
+          // only retries once
+          octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+          return true;
+        }
+      },
+      onSecondaryRateLimit: (
+        _: number,
+        options: {
+          method: string;
+          url: string;
+          request: { retryCount: number };
+        },
+        octokit: Octokit,
+      ) => {
+        // does not retry, only logs a warning
+        octokit.log.warn(
+          `SecondaryRateLimit detected for request ${options.method} ${options.url}`,
+        );
+      },
+    },
+  });
 }
 
 export async function upload<T>(
@@ -39,7 +79,6 @@ export async function upload<T>(
   data: T,
   title: string,
   repo = "core",
-  sleepDuration = 0.1,
 ) {
   const uuid = v4.generate();
 
@@ -49,8 +88,6 @@ export async function upload<T>(
     title: `${title}_${uuid}`,
     body: JSON.stringify(data),
   });
-
-  await sleep(sleepDuration);
 }
 
 // github limit 65536
