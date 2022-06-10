@@ -4,10 +4,11 @@ import {
   createProductSnapshot,
   getProductByProductId,
   updateProduct,
-  updateProductImage,
-} from "../services/mod.ts";
-import { ICreateProductWithImages } from "../interfaces/mod.ts";
-import { getDatabase } from "../db/mod.ts";
+  // updateProductImage,
+  ICreateProductWithImages,
+  getDatabase,
+  ProductEntity
+} from "../mod.ts";
 
 const rawJson = Deno.args[0];
 const recordsToBeInserted: ICreateProductWithImages[] = JSON.parse(rawJson);
@@ -52,7 +53,7 @@ recordsToBeInserted.map(({
       view,
     }, db);
 
-    images.map((image) => updateProductImage({ image, product }, db));
+    // images.map((image) => updateProductImage({ image, productId }, db));
 
     createProductSnapshot({
       productName: name,
