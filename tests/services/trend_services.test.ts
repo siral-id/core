@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.142.0/testing/asserts.ts";
 import { bootstrapDB, shutdownDB } from "../test_utility.ts";
-import { createTrend, Source } from "../../mod.ts";
+import { createTrend, getUniqueTrends, Source } from "../../mod.ts";
 
 const trendData = {
   keyword: "Hello",
@@ -18,6 +18,15 @@ Deno.test("Make sure createTrend is correct", async () => {
   );
 
   assertEquals(count, [1]);
+
+  await shutdownDB(db);
+});
+
+Deno.test("Make sure getUniqueTrends is correct", async () => {
+  const db = bootstrapDB();
+  createTrend(trendData, db);
+
+  assertEquals(getUniqueTrends(db), ["Hello"]);
 
   await shutdownDB(db);
 });

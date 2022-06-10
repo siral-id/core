@@ -19,3 +19,17 @@ export function createTrend(
     ],
   );
 }
+
+export function getUniqueTrends(
+  database: DB,
+): string[] {
+  const uniqueTrends: string[] = [];
+  const query = database.prepareQuery<[string]>(
+    "SELECT DISTINCT keyword FROM trends",
+  );
+  for (const [keyword] of query.iter()) {
+    uniqueTrends.push(keyword);
+  }
+  query.finalize();
+  return uniqueTrends;
+}
