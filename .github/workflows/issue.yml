@@ -42,8 +42,11 @@ jobs:
         with:
           comment: |
             Trend data successfully inserted. Closing issue...
-        
 
+      - if: startsWith(github.event.issue.title, 'WRITE_TREND') == true
+        name: Forward trend to product
+        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/forward_trends.ts
+        
       - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
         name: Close Issue
         uses: peter-evans/close-issue@v2
