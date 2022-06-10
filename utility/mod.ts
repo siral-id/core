@@ -47,9 +47,18 @@ export async function upload<T>(
   });
 }
 
-export function chunkItems<T>(items: T[], size = 512) {
+// github limit 65536
+export function chunkItems<T>(items: T[], maxSize = 65536) {
+  const calculateMaxChunkSize = (dataSize: number, maxSize: number) =>
+    Math.ceil(dataSize / maxSize);
+
+  const chunkSize = calculateMaxChunkSize(
+    JSON.stringify(items).length,
+    maxSize,
+  );
+
   return items.reduce((chunks: T[][], item: T, index) => {
-    const chunk = Math.floor(index / size);
+    const chunk = Math.floor(index / chunkSize);
     chunks[chunk] = ([] as T[]).concat(chunks[chunk] || [], item);
     return chunks;
   }, []);
