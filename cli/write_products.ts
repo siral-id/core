@@ -9,8 +9,11 @@ import {
   updateProduct,
 } from "../mod.ts";
 
-const rawJson = Deno.args[0];
-const recordsToBeInserted: ICreateProductWithImages[] = JSON.parse(rawJson);
+import { readJSON } from 'https://deno.land/x/flat/mod.ts'
+
+// The filename is the first invocation argument
+const filename = Deno.args[0] // Same name as downloaded_filename
+const recordsToBeInserted = await readJSON(filename)
 
 const db = getDatabase();
 

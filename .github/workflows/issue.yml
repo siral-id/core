@@ -28,8 +28,15 @@ jobs:
         run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_trends.ts '${{ github.event.issue.body }}'
 
       - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
-        name: Write trend to database
-        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_products.ts '${{ github.event.issue.body }}'
+        name: Save Product to JSON
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "data.json"
+          json: ${{ fromJSON(github.event.issue.body) }}
+
+      - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
+        name: Write Product to database
+        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_products.ts 'data.json'
         
       - name: Commit & Push changes
         uses: actions-js/push@master
