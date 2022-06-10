@@ -6,7 +6,9 @@ on:
 
   workflow_dispatch:
   
-concurrency: ci-${{ github.ref }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.run_id }}
+
   
 jobs:
   build:
