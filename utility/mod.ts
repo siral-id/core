@@ -30,8 +30,8 @@ export async function download(url: string, filename: string) {
 
 export function setupOctokit(ghToken?: string): Octokit {
   if (!ghToken) throw new Error("GH_TOKEN not found");
-  const OctokitWithRetry = Octokit.plugin(retry)
-  return new OctokitWithRetry({auth: ghToken})
+  const OctokitWithRetry = Octokit.plugin(retry);
+  return new OctokitWithRetry({ auth: ghToken });
 }
 
 export async function upload<T>(
@@ -39,7 +39,7 @@ export async function upload<T>(
   data: T,
   title: string,
   repo = "core",
-  sleepDuration = 0.1
+  sleepDuration = 0.1,
 ) {
   const uuid = v4.generate();
 
@@ -50,7 +50,7 @@ export async function upload<T>(
     body: JSON.stringify(data),
   });
 
-  await sleep(sleepDuration)
+  await sleep(sleepDuration);
 }
 
 // github limit 65536
