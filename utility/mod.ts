@@ -47,9 +47,9 @@ export async function upload<T>(
   });
 }
 
-export function chunkItems<T>(items: T[]){
+export function chunkItems<T>(items: T[], size = 512) {
   return items.reduce((chunks: T[][], item: T, index) => {
-    const chunk = Math.floor(index / 512);
+    const chunk = Math.floor(index / size);
     chunks[chunk] = ([] as T[]).concat(chunks[chunk] || [], item);
     return chunks;
   }, []);
