@@ -1,5 +1,6 @@
 export * from "./header.ts";
 import { Octokit } from "https://cdn.skypack.dev/octokit@v1.7.2?dts";
+import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts";
 import { v4 } from "https://deno.land/std@0.142.0/uuid/mod.ts";
 
 export function sleep(seconds: number) {
@@ -29,7 +30,8 @@ export async function download(url: string, filename: string) {
 
 export function setupOctokit(ghToken?: string): Octokit {
   if (!ghToken) throw new Error("GH_TOKEN not found");
-  return new Octokit({ auth: ghToken });
+  const OctokitWithRetry = Octokit.plugin(retry)
+  return new OctokitWithRetry({auth: ghToken})
 }
 
 export async function upload<T>(
@@ -37,14 +39,18 @@ export async function upload<T>(
   data: T,
   title: string,
   repo = "core",
+  sleepDuration = 0.1
 ) {
   const uuid = v4.generate();
+
   await octokit.rest.issues.create({
     owner: "siral-id",
     repo,
     title: `${title}_${uuid}`,
     body: JSON.stringify(data),
   });
+
+  await sleep(sleepDuration)
 }
 
 // github limit 65536
