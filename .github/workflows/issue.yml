@@ -32,7 +32,7 @@ jobs:
         uses: jsdaniell/create-json@1.1.2
         with:
           name: "data.json"
-          json: ${{ fromJSON(github.event.issue.body) }}
+          json: ${{ fromJson(github.event.issue.body) }}
 
       - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
         name: Write Product to database
