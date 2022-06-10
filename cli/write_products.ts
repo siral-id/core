@@ -2,12 +2,11 @@ import {
   createProduct,
   createProductImage,
   createProductSnapshot,
+  getDatabase,
   getProductByProductId,
-  updateProduct,
   // updateProductImage,
   ICreateProductWithImages,
-  getDatabase,
-  ProductEntity
+  updateProduct,
 } from "../mod.ts";
 
 const rawJson = Deno.args[0];
