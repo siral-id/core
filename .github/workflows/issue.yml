@@ -57,7 +57,12 @@ jobs:
 
       - if: startsWith(github.event.issue.title, 'WRITE_TREND') == true
         name: Forward trend to product
-        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/forward_trends.ts
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/forward_trends.ts
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         
       - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
         name: Close Issue
