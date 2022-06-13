@@ -5,8 +5,8 @@ export const DB_URL =
 export const DB_FILENAME = "siral.db";
 
 export const Repositories = {
-  [Pipeline.ShopeeTrends]: "shopee-id-trends",
-  [Pipeline.TokopediaTrends]: "tokopedia-trends",
-  [Pipeline.ShopeeProducts]: "shopee-id-products",
-  [Pipeline.TokopediaProducts]: "tokopedia-products",
+  [Pipeline.ShopeeTrends]: "core",
+  [Pipeline.TokopediaTrends]: "core",
+  [Pipeline.ShopeeProducts]: "core",
+  [Pipeline.TokopediaProducts]: "core",
 };
