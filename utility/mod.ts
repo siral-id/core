@@ -3,6 +3,7 @@ import { Octokit } from "https://cdn.skypack.dev/octokit@v1.7.2?dts";
 import { throttling } from "https://cdn.skypack.dev/@octokit/plugin-throttling@v3.6.2?dts";
 import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts";
 import { Pipeline, Repositories } from "../mod.ts";
+export { Octokit };
 
 import { v4 } from "https://deno.land/std@0.142.0/uuid/mod.ts";
 
@@ -140,3 +141,5 @@ export function generateResponse(
   const init = { status };
   return new Promise((resolve) => resolve(new Response(blob, init)));
 }
+
+export const _internals = { Octokit, throttling };
