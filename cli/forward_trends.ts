@@ -11,14 +11,14 @@ await upload<string[]>(
   octokit,
   uniqueTrends,
   "FORWARD_LATEST_UNIQUE_TRENDS",
-  "shopee-id-trends",
+  "shopee-id-products",
 );
 
 await upload<string[]>(
   octokit,
   uniqueTrends,
   "FORWARD_LATEST_UNIQUE_TRENDS",
-  "tokopedia-trends",
+  "tokopedia-products",
 );
 
 Deno.exit();
