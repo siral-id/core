@@ -106,3 +106,14 @@ export function chunkItems<T>(items: T[], maxSize = 65536) {
     return chunks;
   }, []);
 }
+
+export function generateResponse(
+  data: Record<string, unknown>,
+  status = 200,
+): Promise<Response> {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
+  const init = { status };
+  return new Promise((resolve) => resolve(new Response(blob, init)));
+}
