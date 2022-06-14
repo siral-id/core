@@ -9,4 +9,6 @@ export const Repositories = {
   [Pipeline.TokopediaTrends]: "core",
   [Pipeline.ShopeeProducts]: "core",
   [Pipeline.TokopediaProducts]: "core",
+  [Pipeline.ForwardShopeeTrends]: "shopee-id-products",
+  [Pipeline.ForwardTokopediaTrends]: "tokopedia-products",
 };
