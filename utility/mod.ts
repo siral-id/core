@@ -97,7 +97,7 @@ export async function uploadWithRetry<T>(
   data: T,
   pipeline: Pipeline,
   retryCount = 0,
-  maxRetry = 60,
+  maxRetry = 10,
   lastError?: string,
 ): Promise<void> {
   if (retryCount > maxRetry) throw new Error(lastError);
