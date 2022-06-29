@@ -45,7 +45,7 @@ jobs:
         uses: Wandalen/wretry.action@v1.0.11
         with:
           action: actions-js/push@master
-          with:
+          with: |
             github_token: ${{ secrets.GH_TOKEN }}
             branch: main
             force: true
