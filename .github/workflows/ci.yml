@@ -1,12 +1,16 @@
 name: Continuous Integration
 
+paths-ignore:
+  - '**.db'
+
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.db'
   pull_request:
     branches: [main]
-  paths-ignore:
-    - '**.db'
+
   workflow_dispatch:
   
 jobs:
