@@ -1,13 +1,12 @@
 name: Continuous Integration
 
-paths-ignore:
-  - '**.db'
-
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
     paths-ignore:
       - '**.db'
+
   pull_request:
     branches: [main]
 
