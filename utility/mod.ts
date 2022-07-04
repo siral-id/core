@@ -2,7 +2,7 @@ export * from "./header.ts";
 import { Octokit } from "https://cdn.skypack.dev/octokit@v1.7.2?dts";
 import { throttling } from "https://cdn.skypack.dev/@octokit/plugin-throttling@v3.6.2?dts";
 import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts";
-import { Pipeline, Repositories } from "../mod.ts";
+import { IGithubCreateGist, Pipeline, Repositories } from "../mod.ts";
 export { Octokit };
 
 import { v4 } from "https://deno.land/std@0.142.0/uuid/mod.ts";
@@ -120,8 +120,8 @@ export async function createGist<T>(
   fileName: string,
   description: string,
   isPublic: boolean,
-) {
-  await octokit.request("POST /gists", {
+): Promise<IGithubCreateGist> {
+  return await octokit.request("POST /gists", {
     description,
     "public": isPublic,
     files: {
@@ -141,10 +141,10 @@ export async function createGistWithRetry<T>(
   retryCount = 0,
   maxRetry = 10,
   lastError?: string,
-): Promise<void> {
-  if (retryCount > maxRetry) throw new Error(lastError);
+): Promise<IGithubCreateGist> {
+  if (retryCount === maxRetry) throw new Error(lastError);
   try {
-    await createGist<T>(
+    return await createGist<T>(
       octokit,
       data,
       fileName,
@@ -153,7 +153,7 @@ export async function createGistWithRetry<T>(
     );
   } catch (error) {
     await sleep(retryCount);
-    await createGistWithRetry(
+    return await createGistWithRetry(
       octokit,
       data,
       fileName,
