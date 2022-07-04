@@ -142,7 +142,7 @@ export async function createGistWithRetry<T>(
   maxRetry = 10,
   lastError?: string,
 ): Promise<IGithubCreateGist> {
-  if (retryCount > maxRetry) throw new Error(lastError);
+  if (retryCount === maxRetry) throw new Error(lastError);
   try {
     return await createGist<T>(
       octokit,
