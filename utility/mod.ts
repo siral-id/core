@@ -98,9 +98,8 @@ export async function uploadWithRetry<T>(
   pipeline: Pipeline,
   retryCount = 0,
   maxRetry = 10,
-  lastError?: string,
 ): Promise<void> {
-  if (retryCount > maxRetry) throw new Error(lastError);
+  if (retryCount === maxRetry) return;
   try {
     await upload<T>(
       octokit,
@@ -109,8 +108,60 @@ export async function uploadWithRetry<T>(
       Repositories[pipeline],
     );
   } catch (error) {
+    console.error(error);
     await sleep(retryCount);
-    await uploadWithRetry(data, retryCount + 1, error);
+    await uploadWithRetry(octokit, data, pipeline, retryCount + 1);
+  }
+}
+
+export async function createGist<T>(
+  octokit: Octokit,
+  content: T,
+  fileName: string,
+  description: string,
+  isPublic: boolean,
+) {
+  await octokit.request("POST /gists", {
+    description,
+    "public": isPublic,
+    files: {
+      [fileName]: {
+        content,
+      },
+    },
+  });
+}
+
+export async function createGistWithRetry<T>(
+  octokit: Octokit,
+  data: T,
+  fileName = "upload.json",
+  description = `${new Date()}`,
+  isPublic = false,
+  retryCount = 0,
+  maxRetry = 10,
+  lastError?: string,
+): Promise<void> {
+  if (retryCount > maxRetry) throw new Error(lastError);
+  try {
+    await createGist<T>(
+      octokit,
+      data,
+      fileName,
+      description,
+      isPublic,
+    );
+  } catch (error) {
+    await sleep(retryCount);
+    await createGistWithRetry(
+      octokit,
+      data,
+      fileName,
+      description,
+      isPublic,
+      retryCount + 1,
+      error,
+    );
   }
 }
 

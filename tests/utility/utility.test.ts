@@ -8,13 +8,17 @@ import {
 import {
   _internals,
   chunkItems,
+  createGist,
+  createGistWithRetry,
   download,
   generateKeyValueMap,
   generateResponse,
   Octokit,
+  Pipeline,
   setupOctokit,
   sleep,
   upload,
+  uploadWithRetry,
 } from "../../mod.ts";
 
 Deno.test("Make sure sleep is correct", async () => {
@@ -66,4 +70,78 @@ Deno.test({
   await upload<Record<string, unknown>>(fake, { "hello": "world" }, "TITLE");
 
   assertEquals(fake.rest.issues.create.callCount, 1); // calling information is saved
+});
+
+Deno.test({
+  name: "Make sure uploadWithRetry is correct when success",
+}, async () => {
+  const fake = { rest: { issues: { create: sinon.fake.resolves(null) } } };
+
+  await uploadWithRetry<Record<string, unknown>>(
+    fake,
+    { "hello": "world" },
+    Pipeline.TokopediaTrends,
+    0,
+    1,
+  );
+
+  assertEquals(fake.rest.issues.create.callCount, 1); // calling information is saved
+});
+
+Deno.test({
+  name: "Make sure uploadWithRetry is correct when failed",
+}, async () => {
+  const stub = sinon.stub();
+  const fake = { rest: { issues: { create: stub } } };
+
+  stub.onCall(0).rejects(new Error());
+  stub.onCall(1).resolves(null);
+
+  await uploadWithRetry<Record<string, unknown>>(
+    fake,
+    { "hello": "world" },
+    Pipeline.TokopediaTrends,
+    0,
+    1,
+  );
+
+  assertEquals(fake.rest.issues.create.callCount, 2); // calling information is saved
+});
+
+Deno.test({
+  name: "Make sure createGist is correct",
+}, async () => {
+  const fake = { request: sinon.fake.resolves(null) };
+
+  await createGist<Record<string, unknown>>(
+    fake,
+    { "hello": "world" },
+    "filename",
+    "description",
+    false,
+  );
+
+  assertEquals(fake.request.callCount, 1); // calling information is saved
+});
+
+Deno.test({
+  name: "Make sure createGistWithRetry is correct when failed",
+}, async () => {
+  const stub = sinon.stub();
+  const fake = { request: stub };
+
+  stub.onCall(0).rejects(new Error());
+  stub.onCall(1).resolves(null);
+
+  await createGistWithRetry<Record<string, unknown>>(
+    fake,
+    { "hello": "world" },
+    "filename",
+    "description",
+    false,
+    0,
+    1,
+  );
+
+  assertEquals(fake.request.callCount, 2); // calling information is saved
 });
