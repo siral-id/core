@@ -167,19 +167,28 @@ export async function createGistWithRetry<T>(
 
 // github limit 65536
 export function chunkItems<T>(items: T[], maxSize = 65536) {
-  const calculateMaxChunkSize = (dataSize: number, maxSize: number) =>
-    Math.ceil(dataSize / maxSize);
+  const sizeof = (obj: T[]) =>  new Blob([JSON.stringify(obj)], {type : 'application/json'}).size;
 
-  const chunkSize = calculateMaxChunkSize(
-    JSON.stringify(items).length,
-    maxSize,
-  );
+  //start first chunk
+  let chunk:T[] = [];
 
-  return items.reduce((chunks: T[][], item: T, index) => {
-    const chunk = Math.floor(index / chunkSize);
-    chunks[chunk] = ([] as T[]).concat(chunks[chunk] || [], item);
-    return chunks;
-  }, []);
+  //add it to the array
+  const result = [chunk];
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    //concat in order to not modify the chunk and do a check before actually adding
+    const size = sizeof(chunk.concat(item))
+    //check if the limit would be exceeded
+    if (size > maxSize) {
+      //if so, start a new chunk
+      chunk = [];
+      result.push(chunk);
+    }
+    //add item to chunk
+    chunk.push(item);
+  }
+  return result;
 }
 
 export function generateResponse(
