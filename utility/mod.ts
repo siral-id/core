@@ -137,7 +137,7 @@ export async function createGistWithRetry<T>(
   data: T,
   fileName = "upload.json",
   description = `${new Date()}`,
-  isPublic = false,
+  isPublic = true,
   retryCount = 0,
   maxRetry = 10,
   lastError?: string,
