@@ -32,7 +32,12 @@ jobs:
 
       - if: startsWith(github.event.issue.title, 'WRITE_PRODUCT') == true
         name: Write Product to database
-        run: deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_products_gist.ts '${{github.event.issue.body}}'
+        run: |
+           echo GH_TOKEN=$GH_TOKEN >> .env
+           export $(cat .env | xargs)
+           deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable cli/write_products_gist.ts '${{github.event.issue.body}}'
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         
       - name: Commit & Push changes
         uses: Wandalen/wretry.action@v1.0.11
