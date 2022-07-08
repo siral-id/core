@@ -8,7 +8,7 @@ export { Octokit };
 import { v4 } from "https://deno.land/std@0.142.0/uuid/mod.ts";
 
 export function sleep(seconds: number) {
-  return new Promise((resolve) => setTimeout(resolve, 10 ** seconds));
+  return new Promise((resolve) => setTimeout(resolve, 2 ** seconds * 10));
 }
 
 export function generateKeyValueMap<T>(
