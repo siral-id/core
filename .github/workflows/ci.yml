@@ -15,6 +15,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      squid:
+        image: docker.io/salrashid123/squidproxy
+        ports:
+          - 3128:3128
+        options: -dit sh -c "/apps/squid/sbin/squid -NsY -f /apps/squid.conf.forward"
     
     steps:
       - name: Setup deno

@@ -1,4 +1,5 @@
 export * from "./header.ts";
+export * from "./http_client.ts";
 import { Octokit } from "https://cdn.skypack.dev/octokit@v1.7.2?dts";
 import { throttling } from "https://cdn.skypack.dev/@octokit/plugin-throttling@v3.6.2?dts";
 import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts";
