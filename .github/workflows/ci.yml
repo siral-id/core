@@ -16,13 +16,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      squid:
-        image: salrashid123/squidproxy
-        ports:
-          - 3128:3128
-        options: -v ${{ github.workspace }}:/apps/squid -it --entrypoint "/bin/bash -c /apps/squid/sbin/squid -NsY -f /apps/squid.conf.forward &"
-    
     steps:
       - name: Setup deno
         uses: denoland/setup-deno@main

@@ -1,5 +1,6 @@
 import { BufReader } from "https://deno.land/std@0.63.0/io/bufio.ts";
 import { encode } from "https://deno.land/std@0.63.0/encoding/base64.ts";
+import { writeAll } from "https://deno.land/std/streams/conversion.ts";
 
 export type PasswordCredential = {
   name: string;
@@ -17,7 +18,7 @@ export type Method = "GET" | "POST" | "PUT" | "DELETE";
 export type Request = {
   method?: Method;
   url: URL | string;
-  body?: string | URLSearchParams | object;
+  body?: string | URLSearchParams | unknown;
   headers?: Headers;
   credentials?: PasswordCredential;
 };
@@ -39,7 +40,9 @@ export class Response {
     this.headers = init.headers;
   }
   json<T>(
-    reviver?: ((this: any, key: string, value: any) => any) | undefined,
+    reviver?:
+      | ((this: unknown, key: string, value: unknown) => unknown)
+      | undefined,
   ): T {
     return this.body ? JSON.parse(this.body, reviver) : null;
   }
@@ -78,14 +81,14 @@ export async function customFetch(
   const endpointTls = endpointUrl.protocol === "https:";
 
   if (proxy && endpointTls) {
-    // @ts-ignore
+    // @ts-ignore ignore error
     conn = await connectProxy(endpointUrl, conn, reader, proxy);
     reader = new BufReader(conn);
   }
 
   const requestMessage = makeRequestMessage(request, endpointUrl);
   //console.debug(requestMessage);
-  await Deno.writeAll(conn, new TextEncoder().encode(requestMessage));
+  await writeAll(conn, new TextEncoder().encode(requestMessage));
   const response = await makeResponse(reader);
   conn.close();
   return response;
@@ -127,7 +130,7 @@ async function connectProxy(
 
   //console.debug(connectRequest);
   const decoder = new TextDecoder("utf-8");
-  await Deno.writeAll(conn, new TextEncoder().encode(connectRequest));
+  await writeAll(conn, new TextEncoder().encode(connectRequest));
   const statusLine = await reader.readLine();
   if (statusLine) {
     //console.debug(decoder.decode(statusLine.line));
@@ -154,9 +157,10 @@ async function connectProxy(
   }
 
   // TODO if 200 response, start TLS
+  // deno-lint-ignore no-explicit-any
   return (Deno as any).startTls(
     conn,
-    { hostname: endpointUrl.hostname, port: port },
+    { hostname: endpointUrl.hostname, port },
   ); // TODO unstable
 }
 
