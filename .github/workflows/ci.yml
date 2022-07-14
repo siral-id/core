@@ -21,7 +21,7 @@ jobs:
         image: docker.io/salrashid123/squidproxy
         ports:
           - 3128:3128
-        options: -c "/apps/squid/sbin/squid -NsY -f /apps/squid.conf.forward"
+        options: --entrypoint "/apps/squid/sbin/squid -NsY -f /apps/squid.conf.forward"
     
     steps:
       - name: Setup deno
