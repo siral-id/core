@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Setup deno
         uses: denoland/setup-deno@main
@@ -41,9 +41,3 @@ jobs:
         uses: codecov/codecov-action@v1.0.10 # upload the report on Codecov
         with:
           file: ./coverage.lcov
-
-      - name: Collect coverage on PR
-        uses: romeovs/lcov-reporter-action@v0.2.16
-        with:
-            lcov-file: ./coverage/lcov
-            github-token: ${{ secrets.GH_TOKEN }}

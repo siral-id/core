@@ -42,7 +42,7 @@ Deno.test("Make sure download is correct", async () => {
 });
 
 Deno.test("Make sure chunkItems is correct", () => {
-  assertEquals(chunkItems<number>([1, 2, 3]), [[1, 2, 3]]);
+  assertEquals(chunkItems<number>([1, 2, 3]), [ [ 1, 2, 3 ] ]);
 });
 
 Deno.test("Make sure generateResponse is correct", async () => {
