@@ -1,4 +1,5 @@
 export * from "./header.ts";
+export * from "./http_client.ts";
 import { Octokit } from "https://cdn.skypack.dev/octokit@v1.7.2?dts";
 import { throttling } from "https://cdn.skypack.dev/@octokit/plugin-throttling@v3.6.2?dts";
 import { retry } from "https://cdn.skypack.dev/@octokit/plugin-retry@v3.0.9?dts";
@@ -167,10 +168,11 @@ export async function createGistWithRetry<T>(
 
 // github limit 65536
 export function chunkItems<T>(items: T[], maxSize = 65536) {
-  const sizeof = (obj: T[]) =>  new Blob([JSON.stringify(obj)], {type : 'application/json'}).size;
+  const sizeof = (obj: T[]) =>
+    new Blob([JSON.stringify(obj)], { type: "application/json" }).size;
 
   //start first chunk
-  let chunk:T[] = [];
+  let chunk: T[] = [];
 
   //add it to the array
   const result = [chunk];
@@ -178,7 +180,7 @@ export function chunkItems<T>(items: T[], maxSize = 65536) {
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     //concat in order to not modify the chunk and do a check before actually adding
-    const size = sizeof(chunk.concat(item))
+    const size = sizeof(chunk.concat(item));
     //check if the limit would be exceeded
     if (size > maxSize) {
       //if so, start a new chunk
