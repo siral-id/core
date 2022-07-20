@@ -72,3 +72,11 @@ jobs:
         with:
           comment: |
             Product data successfully inserted. Closing issue...
+
+      - if: startsWith(github.event.issue.title, 'WRITE_') == true
+        name: Run the build process with Docker
+        uses: addnab/docker-run-action@v3
+        with:
+            image: dimitri/pgloader
+            options: -v ${{ github.workspace }}:/pgloader
+            run: pgloader ./pgloader/siral.db ${{ secrets.DATABASE_URL }}
